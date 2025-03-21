@@ -1,0 +1,23 @@
+groovy
+pipeline {
+  agent any
+  stages {
+    stage('Build') {
+      steps {
+        script {
+          sh 'docker build -t backend ./backend'
+          sh 'docker build -t frontend ./frontend'
+        }
+      }
+    }
+    stage('Deploy') {
+      steps {
+        script {
+          sh 'docker push backend'
+          sh 'docker push frontend'
+          sh 'terraform apply -auto-approve'
+        }
+      }
+    }
+  }
+}
